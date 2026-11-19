@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SVVV AI Student Chatbot</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f2f6f0;
+    color: #354b39;
+}
+
+header {
+    background: #829b83;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 5px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 15px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 3px 15px #0001;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #526e56;
+}
+
+.chatbox {
+    height: 400px;
+    overflow-y: auto;
+    background: #f4f8f2;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.message {
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    max-width: 85%;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.bot {
+    background: #dfeade;
+}
+
+.user {
+    background: #829b83;
+    color: white;
+    margin-left: auto;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+input {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid #ccd9ca;
+    border-radius: 10px;
+    outline: none;
+}
+
+button {
+    background: #829b83;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #526e56;
+}
+
+.quick button {
+    margin: 5px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #829b83;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌿 SVVV Student AI Assistant</h1>
+    <p>Shri Vaishnav Vidyapeeth Vishwavidyalaya, Indore</p>
+    <p>Your Smart Cloud Computing Study Partner</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+    <h2>🤖 Welcome to SVVV AI Chatbot</h2>
+    <p>Ask any question from your Cloud Fundamentals syllabus.</p>
+
+    <div class="chatbox" id="chatbox">
+
+        <div class="message bot">
+            Hello Student! 👋
+
+            Welcome to SVVV AI Student Assistant.
+
+            I can help you with:
+
+            1. Cloud Computing
+            2. IBM Cloud
+            3. Cloud Foundry
+            4. IBM Cloud Services
+            5. DevOps and CI/CD
+            6. Node-RED
+            7. All 5 syllabus units
+            8. Practical questions
+
+            Ask me anything! 🌱
+        </div>
+
+    </div>
+
+    <div class="input-area">
+
+        <input type="text"
+        id="question"
+        placeholder="Ask your question here..."
+        onkeydown="if(event.key==='Enter') sendMessage()">
+
+        <button onclick="sendMessage()">Send ➤</button>
+
+    </div>
+</div>
+
+<div class="card quick">
+    <h3>Quick Questions</h3>
+
+    <button onclick="quick('What is Cloud Computing?')">
+        Cloud Computing
+    </button>
+
+    <button onclick="quick('Explain IaaS PaaS SaaS')">
+        IaaS PaaS SaaS
+    </button>
+
+    <button onclick="quick('What is IBM Cloud?')">
+        IBM Cloud
+    </button>
+
+    <button onclick="quick('What is Cloud Foundry?')">
+        Cloud Foundry
+    </button>
+
+    <button onclick="quick('Explain Node-RED')">
+        Node-RED
+    </button>
+</div>
+
+</div>
+
+<footer>
+    SVVV Student AI Assistant | Designed for Students 🌿
+</footer>
+
+<script>
+
+// SYLLABUS KNOWLEDGE DATABASE
+
+const knowledge = [
+
+{
+keywords:["cloud computing","what is cloud"],
+answer:"Cloud Computing is the delivery of computing services like servers, storage, databases, networking and software over the internet.\n\nIt allows users to access resources whenever required without purchasing physical infrastructure."
+},
+
+{
+keywords:["traditional it","traditional infrastructure"],
+answer:"Traditional IT infrastructure uses physical servers, computers, storage and networking equipment managed by an organization.\n\nChallenges:\n1. High initial cost.\n2. Maintenance problems.\n3. Limited scalability.\n4. Hardware upgrades.\n5. Resource wastage."
+},
+
+{
+keywords:["characteristics","features of cloud"],
+answer:"Main characteristics of Cloud Computing:\n\n1. On-demand self-service.\n2. Broad network access.\n3. Resource pooling.\n4. Rapid elasticity.\n5. Measured service."
+},
+
+{
+keywords:["iaas","infrastructure as a service"],
+answer:"IaaS stands for Infrastructure as a Service.\n\nIt provides virtual machines, servers, storage and networking over the internet.\n\nThe user manages the operating system and applications, while the provider manages physical infrastructure."
+},
+
+{
+keywords:["paas","platform as a service"],
+answer:"PaaS stands for Platform as a Service.\n\nIt provides a platform for developing, testing and deploying applications.\n\nDevelopers focus mainly on application development instead of managing servers."
+},
+
+{
+keywords:["saas","software as a service"],
+answer:"SaaS stands for Software as a Service.\n\nIt provides ready-to-use software over the internet.\n\nUsers can access applications through a browser without installing or managing the underlying infrastructure."
+},
+
+{
+keywords:["difference between iaas","iaas paas saas","compare service"],
+answer:"IaaS: Provides infrastructure like virtual machines and storage.\n\nPaaS: Provides a platform for application development.\n\nSaaS: Provides ready-to-use software.\n\nIaaS = Infrastructure\nPaaS = Platform\nSaaS = Software"
+},
+
+{
+keywords:["public cloud"],
+answer:"Public Cloud is a cloud deployment model in which computing services are provided over the internet using infrastructure shared among multiple customers."
+},
+
+{
+keywords:["private cloud"],
+answer:"Private Cloud is a cloud environment dedicated to a single organization. It provides greater control over infrastructure and resources."
+},
+
+{
+keywords:["hybrid cloud"],
+answer:"Hybrid Cloud combines Public Cloud and Private Cloud environments. It allows organizations to use both environments according to their requirements."
+},
+
+{
+keywords:["deployment model","deployment models"],
+answer:"Three common cloud deployment models are:\n\n1. Public Cloud\n2. Private Cloud\n3. Hybrid Cloud"
+},
+
+{
+keywords:["benefits of cloud","advantages of cloud"],
+answer:"Advantages of Cloud Computing:\n\n1. Cost reduction.\n2. Easy scalability.\n3. Flexibility.\n4. Remote accessibility.\n5. Data backup.\n6. Faster deployment.\n7. Reduced hardware maintenance."
+},
+
+{
+keywords:["ibm cloud","what is ibm"],
+answer:"IBM Cloud is a cloud computing platform provided by IBM.\n\nIt offers services related to computing, storage, databases, AI, analytics, containers and application development.\n\nOur syllabus covers IBM Cloud architecture, services, Cloud Foundry and DevOps."
+},
+
+{
+keywords:["organization","organizations"],
+answer:"An Organization in Cloud Foundry is a group that manages users, spaces and application resources.\n\nIt helps organize cloud resources according to teams or business units."
+},
+
+{
+keywords:["space","spaces"],
+answer:"A Space is an environment inside an organization.\n\nIt helps separate application development, testing and production environments."
+},
+
+{
+keywords:["domain"],
+answer:"A Domain is a DNS domain used to create routes for applications in Cloud Foundry.\n\nIt helps users access deployed applications through URLs."
+},
+
+{
+keywords:["user management","users","quotas"],
+answer:"User Management controls who can access cloud resources and what permissions they have.\n\nQuotas define limits on resources such as memory, storage or service instances."
+},
+
+{
+keywords:["monitoring","logging","logs"],
+answer:"Monitoring checks application performance and resource usage.\n\nLogging records application events, errors and activities.\n\nBoth help developers identify and solve problems."
+},
+
+{
+keywords:["container","containers"],
+answer:"A Container is a lightweight package containing an application and its required dependencies.\n\nContainers help applications run consistently in different environments."
+},
+
+{
+keywords:["cloud foundry"],
+answer:"Cloud Foundry is an open-source Platform as a Service (PaaS).\n\nIt allows developers to deploy applications without managing the complete underlying infrastructure.\n\nIt supports application staging, execution and management."
+},
+
+{
+keywords:["cloud controller"],
+answer:"Cloud Controller is a component of Cloud Foundry responsible for managing application operations, metadata, routes and deployment requests."
+},
+
+{
+keywords:["diego","diego brain"],
+answer:"Diego is a component of Cloud Foundry responsible for scheduling and running application workloads.\n\nIt helps manage application instances and their execution."
+},
+
+{
+keywords:["staging","application staging"],
+answer:"Application Staging is the process of preparing application code to run.\n\nIt includes identifying the application type, obtaining dependencies and preparing a runnable application package."
+},
+
+{
+keywords:["cli","command line interface"],
+answer:"CLI stands for Command Line Interface.\n\nCloud Foundry CLI allows developers to interact with Cloud Foundry using terminal commands.\n\nIt is used for logging in, deploying applications, checking status and managing services."
+},
+
+{
+keywords:["analytics"],
+answer:"Analytics Services help collect, process and analyse data.\n\nThey help organizations understand information and make better decisions."
+},
+
+{
+keywords:["watson"],
+answer:"IBM Watson refers to IBM's AI technologies and services.\n\nThese services can support natural language processing, speech and other AI-related applications.\n\nOur syllabus includes integrating Watson services with cloud applications."
+},
+
+{
+keywords:["storage services","storage"],
+answer:"Cloud Storage Services provide online storage for application data.\n\nCommon storage types include Object Storage, Block Storage and File Storage."
+},
+
+{
+keywords:["auto scaling","autoscaling","auto-scaling"],
+answer:"Auto-scaling automatically increases or decreases application resources according to workload or demand.\n\nIt helps maintain performance and manage resource usage."
+},
+
+{
+keywords:["service instance","service instances"],
+answer:"A Service Instance is a provisioned instance of a cloud service, such as a database or storage service.\n\nApplications can connect to these services using their configuration and credentials."
+},
+
+{
+keywords:["vcap_services","vcap services"],
+answer:"VCAP_SERVICES is an environment variable used in Cloud Foundry.\n\nIt contains information about services connected to an application, including service names and connection credentials.\n\nApplications use this information to connect to cloud services."
+},
+
+{
+keywords:["devops"],
+answer:"DevOps combines Development and Operations practices.\n\nIts purpose is to improve software development and delivery through collaboration, automation, testing and continuous monitoring."
+},
+
+{
+keywords:["continuous integration","ci"],
+answer:"Continuous Integration (CI) is a software development practice in which developers regularly merge code changes into a shared repository.\n\nAutomated builds and tests help detect errors early."
+},
+
+{
+keywords:["continuous delivery","ci/cd","cicd","pipeline"],
+answer:"CI/CD stands for Continuous Integration and Continuous Delivery/Deployment.\n\nCI automatically builds and tests code changes.\n\nCD helps prepare and deliver tested software to deployment environments.\n\nA pipeline may contain source code, build, testing and deployment stages."
+},
+
+{
+keywords:["toolchain","toolchains"],
+answer:"A Toolchain is a collection of connected tools used during software development.\n\nIt may include code repositories, build tools, testing tools, deployment pipelines and monitoring tools."
+},
+
+{
+keywords:["repository","repositories"],
+answer:"A Repository is a storage location for source code and project files.\n\nIt helps developers save, manage and track changes in their projects."
+},
+
+{
+keywords:["automated deployment"],
+answer:"Automated Deployment is the process of releasing applications using automated tools and pipelines instead of performing every step manually.\n\nIt improves speed, consistency and reliability."
+},
+
+{
+keywords:["node-red","node red","nodered"],
+answer:"Node-RED is a flow-based programming tool.\n\nIt is used to connect devices, APIs and online services using a visual editor.\n\nUsers create applications by connecting different nodes."
+},
+
+{
+keywords:["node-red architecture","architecture of node"],
+answer:"Node-RED architecture mainly contains:\n\n1. Flow Editor – Used to create and edit flows.\n2. Runtime – Executes the flows.\n3. Nodes – Perform different operations.\n\nConnected nodes exchange messages to perform tasks."
+},
+
+{
+keywords:["inject node"],
+answer:"Inject Node is used to start a flow by sending a message.\n\nIt can be triggered manually or automatically at scheduled intervals."
+},
+
+{
+keywords:["debug node"],
+answer:"Debug Node displays messages and their properties in the Node-RED debug panel.\n\nIt helps developers test and troubleshoot flows."
+},
+
+{
+keywords:["function node"],
+answer:"Function Node allows developers to write JavaScript code to process messages.\n\nIt can modify message properties and perform custom operations."
+},
+
+{
+keywords:["change node"],
+answer:"Change Node modifies message properties without writing JavaScript.\n\nIt can set, change, move or delete message properties."
+},
+
+{
+keywords:["switch node"],
+answer:"Switch Node routes messages to different outputs based on conditions.\n\nFor example, it can send messages to different outputs depending on a value."
+},
+
+{
+keywords:["palette node","palette"],
+answer:"The Node-RED Palette contains available nodes that developers can use in their flows.\n\nAdditional nodes can be installed to extend Node-RED functionality."
+},
+
+{
+keywords:["raspberry pi","raspberry"],
+answer:"Raspberry Pi is a small single-board computer used in electronics, IoT and hardware projects.\n\nNode-RED can connect to Raspberry Pi hardware using suitable nodes."
+},
+
+{
+keywords:["flow based","flow-based","what is flow","flows"],
+answer:"Flow-based Programming is a programming approach in which applications are created by connecting individual components or nodes.\n\nEach node performs a specific operation and passes messages to other nodes."
+},
+
+{
+keywords:["practical 1","ibm cloud account"],
+answer:"Practical 1: Create and configure an IBM Cloud account and explore IBM Cloud dashboard features.\n\nAim: Understand the IBM Cloud dashboard, resource navigation and service catalog."
+},
+
+{
+keywords:["practical 2","service models"],
+answer:"Practical 2: Study and demonstrate different cloud service models using IBM Cloud.\n\nTopics: IaaS, PaaS and SaaS."
+},
+
+{
+keywords:["practical 3","deploy application","sample application"],
+answer:"Practical 3: Deploy a sample application using IBM Cloud Foundry CLI.\n\nConceptual steps:\n1. Install the compatible CLI.\n2. Connect to the Cloud Foundry environment.\n3. Select the organization and space.\n4. Deploy the application.\n5. Check application status and logs."
+},
+
+{
+keywords:["practical 4","manage organizations"],
+answer:"Practical 4: Create and manage Organizations, Spaces and Users in IBM Cloud.\n\nAim: Understand resource organization and user access management."
+},
+
+{
+keywords:["practical 5","application logs"],
+answer:"Practical 5: Monitor application logs and resource usage in IBM Cloud.\n\nAim: Understand application monitoring, error logs and resource utilization."
+},
+
+{
+keywords:["practical 6","service instances"],
+answer:"Practical 6: Create and configure IBM Cloud service instances for storage and analytics.\n\nAim: Understand service provisioning and configuration."
+},
+
+{
+keywords:["practical 7","integrate watson"],
+answer:"Practical 7: Integrate IBM Watson services with a cloud application.\n\nAim: Understand how AI services can be connected to cloud applications."
+},
+
+{
+keywords:["practical 8","configure vcap"],
+answer:"Practical 8: Configure VCAP_SERVICES for cloud application deployment.\n\nAim: Understand how application service credentials and connection details are provided."
+},
+
+{
+keywords:["practical 9","devops toolchain"],
+answer:"Practical 9: Create a DevOps Toolchain and configure a Continuous Delivery pipeline.\n\nAim: Understand source code integration, automated builds, testing and delivery."
+},
+
+{
+keywords:["practical 10","automated application"],
+answer:"Practical 10: Implement automated application deployment using IBM Cloud DevOps services.\n\nAim: Understand automated application release and deployment."
+},
+
+{
+keywords:["practical 11","install node-red","configure node-red"],
+answer:"Practical 11: Install and configure the Node-RED environment.\n\nAim: Understand Node-RED installation, runtime and flow creation."
+},
+
+{
+keywords:["practicals","list of practical"],
+answer:"Your syllabus contains 11 practicals:\n\n1. IBM Cloud account creation.\n2. Cloud service models.\n3. Cloud Foundry CLI deployment.\n4. Organizations, Spaces and Users.\n5. Application monitoring and logs.\n6. Storage and Analytics services.\n7. IBM Watson integration.\n8. VCAP_SERVICES configuration.\n9. DevOps Toolchain.\n10. Automated deployment.\n11. Node-RED installation and configuration."
+},
+
+{
+keywords:["unit 1","unit i"],
+answer:"UNIT I – Fundamentals of Cloud Computing (10 Hours)\n\n1. Traditional IT infrastructure and challenges.\n2. Future trends in IT.\n3. Introduction to Cloud Computing.\n4. Characteristics of Cloud Computing.\n5. IaaS, PaaS and SaaS.\n6. Public, Private and Hybrid Cloud.\n7. IBM Cloud overview.\n8. Benefits of Cloud Computing."
+},
+
+{
+keywords:["unit 2","unit ii"],
+answer:"UNIT II – IBM Cloud Platform and Architecture (8 Hours)\n\n1. IBM Cloud evolution and features.\n2. IBM Cloud UI walkthrough.\n3. Organizations, Spaces and Domains.\n4. Users and quotas.\n5. Monitoring and logging.\n6. Containers and services.\n7. Cloud Foundry architecture.\n8. Cloud Controller and Diego Brain.\n9. Application staging and execution.\n10. Cloud Foundry CLI tools."
+},
+
+{
+keywords:["unit 3","unit iii"],
+answer:"UNIT III – IBM Cloud Services and Application Integration (9 Hours)\n\n1. IBM Cloud Services Overview.\n2. Analytics Services.\n3. Watson Services.\n4. Storage Services.\n5. Auto-scaling concepts.\n6. DevOps app support services.\n7. Registering services.\n8. Service instances and metadata.\n9. VCAP_SERVICES configuration."
+},
+
+{
+keywords:["unit 4","unit iv"],
+answer:"UNIT IV – IBM Cloud DevOps and Continuous Delivery (9 Hours)\n\n1. Introduction to IBM Cloud DevOps.\n2. Continuous Integration and Continuous Delivery.\n3. Toolchains overview.\n4. Code and repositories.\n5. Delivery pipelines.\n6. Automated deployment concepts."
+},
+
+{
+keywords:["unit 5","unit v"],
+answer:"UNIT V – Node-RED Application Development (9 Hours)\n\n1. Introduction to Node-RED.\n2. Node-RED architecture.\n3. Installation and execution.\n4. Creating Node-RED flows.\n5. Inject Node.\n6. Debug Node.\n7. Function Node.\n8. Change Node.\n9. Switch Node.\n10. Palette Nodes.\n11. Raspberry Pi Node.\n12. Flow-based programming."
+}
+
+];
+
+
+// CHATBOT RESPONSE SYSTEM
+
+function getAnswer(question) {
+
+    let q = question.toLowerCase();
+
+    for(let item of knowledge) {
+
+        for(let keyword of item.keywords) {
+
+            if(q.includes(keyword.toLowerCase())) {
+                return item.answer;
+            }
+
+        }
+
+    }
+
+    return "Sorry! I could not find an exact topic in my syllabus database. 🌿\n\nTry asking about:\n\n• Cloud Computing\n• IaaS, PaaS, SaaS\n• IBM Cloud\n• Cloud Foundry\n• Watson Services\n• VCAP_SERVICES\n• DevOps and CI/CD\n• Node-RED\n• All five syllabus units\n\nPlease use a topic name so I can find the closest answer.";
+}
+
+
+// DISPLAY MESSAGE
+
+function addMessage(text,type) {
+
+    let box = document.getElementById("chatbox");
+
+    let div = document.createElement("div");
+
+    div.className = "message " + type;
+
+    div.textContent = text;
+
+    box.appendChild(div);
+
+    box.scrollTop = box.scrollHeight;
+
+}
+
+
+// SEND MESSAGE
+
+function sendMessage() {
+
+    let input = document.getElementById("question");
+
+    let question = input.value.trim();
+
+    if(question === "") return;
+
+    addMessage(question,"user");
+
+    input.value = "";
+
+    setTimeout(function() {
+
+        let answer = getAnswer(question);
+
+        addMessage(answer,"bot");
+
+    },400);
+
+}
+
+
+// QUICK QUESTIONS
+
+function quick(question) {
+
+    document.getElementById("question").value = question;
+
+    sendMessage();
+
+}
+
+</script>
+
+</body>
+</html>
